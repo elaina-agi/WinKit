@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <Deterministic>true</Deterministic>
+    <Version>0.1.0</Version>
+    <Authors>WinKit</Authors>
+    <Company>WinKit</Company>
+    <Product>WinKit Windows 工具箱</Product>
+  </PropertyGroup>
+</Project>

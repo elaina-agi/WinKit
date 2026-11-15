@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>WinKit</AssemblyName>
+    <RootNamespace>WinKit.Desktop</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>0.1.0</Version>
+    <Description>WinKit Windows 工具箱</Description>
+    <ApplicationIcon>../../assets/WinKit.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../WinKit.Core/WinKit.Core.csproj" />
+    <Resource Include="../../assets/WinKit.ico" Link="Assets/WinKit.ico" />
+  </ItemGroup>
+</Project>

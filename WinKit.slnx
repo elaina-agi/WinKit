@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/WinKit.Core/WinKit.Core.csproj" />
+    <Project Path="src/WinKit.Desktop/WinKit.Desktop.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/WinKit.Core.Tests/WinKit.Core.Tests.csproj" />
+    <Project Path="tests/WinKit.Desktop.Tests/WinKit.Desktop.Tests.csproj" />
+  </Folder>
+</Solution>
