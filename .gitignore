@@ -1,10 +1,56 @@
+# Repository-local SDK and generated deliverables
 .tools/
 artifacts/
 **/bin/
 **/obj/
+**/publish/
+**/TestResults/
+
+# IDE and user-specific state
 .vs/
 .vscode/
+.idea/
 *.user
 *.suo
+*.userosscache
+*.sln.docstates
+*.DotSettings.user
+
+# Local credentials and signing material (never commit real secrets)
+.env
+.env.*
+!.env.example
+!.env.template
+.envrc
+*.pfx
+*.p12
+*.pem
+*.key
+*.snk
+*.keystore
+.netrc
+.netrc.*
+NuGet.Config.user
+nuget.config.local
+
+# Runtime settings, operation history, crash dumps and loose build outputs
+settings.json
+settings.json.tmp
+operations.jsonl
 *.log
-TestResults/
+*.dmp
+*.exe
+*.dll
+*.pdb
+
+# Temporary / machine-generated files
+*.tmp
+*.bak
+__pycache__/
+*.py[cod]
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Accidentally created Windows reserved-name objects, not ordinary 'null' files
+[nN][uU][lL]
