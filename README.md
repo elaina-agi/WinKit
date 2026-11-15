@@ -30,6 +30,7 @@
 - [`tests/WinKit.Desktop.Tests/`](tests/WinKit.Desktop.Tests/)：UI Automation 操作实际窗口和确认框。
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)：分层、添加工具和安全约束。
 - [`docs/VALIDATION.md`](docs/VALIDATION.md)：验证方式及已知边界。
+- [`docs/PUBLISHING.md`](docs/PUBLISHING.md)：公开推送检查、敏感信息处理与忽略范围。
 
 ## 开发与编译
 
