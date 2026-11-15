@@ -12,4 +12,4 @@ $process = Start-Process -FilePath $Exe -ArgumentList $argumentLine -PassThru -W
 if ($process.ExitCode -ne 0) { throw "UI smoke 失败，退出码 $($process.ExitCode)。检查 $OutputDirectory 中的状态文件。" }
 $state = Get-Content -Raw -LiteralPath (Join-Path $OutputDirectory 'smoke-state.json') | ConvertFrom-Json
 if (-not $state.Passed) { throw 'UI smoke 状态未通过。' }
-$state | Select-Object Passed,FileCount,DefaultSelected,SelectedAfterSelectAll,SelectedAfterClear,BindingErrors
+$state | Select-Object Passed,FileCount,DefaultSelected,SelectedAfterSelectAll,SelectedAfterClear,ThemeAppliedLive,ThemePreservesResults,ThemePersisted,LightContrastReadable,DarkContrastReadable,BindingErrors

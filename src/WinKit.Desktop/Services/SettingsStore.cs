@@ -6,6 +6,7 @@ namespace WinKit.Desktop.Services;
 public sealed class AppSettings
 {
     public bool RememberLastFolder { get; set; } = true;
+    public bool UseDarkTheme { get; set; }
     public string LastFolder { get; set; } = string.Empty;
 }
 

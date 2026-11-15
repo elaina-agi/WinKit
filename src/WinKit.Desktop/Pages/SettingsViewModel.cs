@@ -9,9 +9,11 @@ public sealed class SettingsViewModel : ObservableObject
     private readonly IDesktopDialogs _dialogs;
     private readonly OperationJournal _journal;
     private string _saveStatus;
-    public SettingsViewModel(SettingsStore settings, IDesktopDialogs dialogs, OperationJournal journal)
+    public ThemeService Theme { get; }
+    public SettingsViewModel(SettingsStore settings, IDesktopDialogs dialogs, OperationJournal journal, ThemeService theme)
     {
         _settings = settings;
+        Theme = theme;
         _dialogs = dialogs;
         _journal = journal;
         _saveStatus = settings.LoadWarning ?? "设置在本机保存，更改后立即生效。";

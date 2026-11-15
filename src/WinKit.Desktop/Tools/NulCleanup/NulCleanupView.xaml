@@ -1,5 +1,5 @@
 <UserControl x:Class="WinKit.Desktop.Tools.NulCleanup.NulCleanupView"
- xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Foreground="{DynamicResource TextBrush}">
  <Grid Margin="28,24,28,22">
   <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
   <StackPanel Margin="0,0,0,20">
@@ -24,10 +24,10 @@
     <StackPanel><TextBlock Text="{Binding StatusTitle}" FontWeight="SemiBold" FontSize="15" AutomationProperties.AutomationId="StatusTitle"/><TextBlock Text="{Binding StatusDetail}" Style="{StaticResource MutedText}" Margin="0,5,0,0" AutomationProperties.AutomationId="StatusDetail"/></StackPanel>
     <Button Grid.Column="1" Content="查看扫描问题" Command="{Binding ShowIssuesCommand}" VerticalAlignment="Top" Margin="12,0,0,0" AutomationProperties.AutomationId="ScanIssues"/>
    </Grid>
-   <ProgressBar IsIndeterminate="True" Height="3" Margin="0,11,0,0" Visibility="{Binding IsBusy, Converter={StaticResource BoolVisibility}}" Foreground="{StaticResource PrimaryBrush}"/>
-   <TextBlock Text="{Binding CurrentDirectory}" TextTrimming="CharacterEllipsis" ToolTip="{Binding CurrentDirectory}" FontSize="12" Foreground="{StaticResource MutedBrush}" Margin="0,5,0,0" Visibility="{Binding IsBusy, Converter={StaticResource BoolVisibility}}"/>
-   <Border Background="#FFF4DE" BorderBrush="#E8D5AB" BorderThickness="1" CornerRadius="7" Padding="12,10" Margin="0,11,0,0" Visibility="{Binding HasNotice, Converter={StaticResource BoolVisibility}}">
-    <TextBlock Text="{Binding Notice}" TextWrapping="Wrap" Foreground="#745419"/>
+   <ProgressBar IsIndeterminate="True" Height="3" Margin="0,11,0,0" Visibility="{Binding IsBusy, Converter={StaticResource BoolVisibility}}" Foreground="{DynamicResource PrimaryBrush}"/>
+   <TextBlock Text="{Binding CurrentDirectory}" TextTrimming="CharacterEllipsis" ToolTip="{Binding CurrentDirectory}" FontSize="12" Foreground="{DynamicResource MutedBrush}" Margin="0,5,0,0" Visibility="{Binding IsBusy, Converter={StaticResource BoolVisibility}}"/>
+   <Border Background="{DynamicResource NoticeBackgroundBrush}" BorderBrush="{DynamicResource NoticeBorderBrush}" BorderThickness="1" CornerRadius="7" Padding="12,10" Margin="0,11,0,0" Visibility="{Binding HasNotice, Converter={StaticResource BoolVisibility}}">
+    <TextBlock Text="{Binding Notice}" TextWrapping="Wrap" Foreground="{DynamicResource NoticeTextBrush}"/>
    </Border>
   </StackPanel>
   <Border Grid.Row="3" Style="{StaticResource Card}" ClipToBounds="True">
@@ -50,22 +50,22 @@
       </DataGridTemplateColumn>
       <DataGridTemplateColumn Header="大小" Width="100" SortMemberPath="Candidate.Size"><DataGridTemplateColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding SizeText}" Margin="10,0" VerticalAlignment="Center"/></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
       <DataGridTemplateColumn Header="处理状态" Width="116" SortMemberPath="Status">
-       <DataGridTemplateColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding Status}" ToolTip="{Binding Message}" VerticalAlignment="Center" Margin="10,0"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Foreground" Value="{StaticResource MutedBrush}"/><Style.Triggers><DataTrigger Binding="{Binding Status}" Value="已删除"><Setter Property="Foreground" Value="#26764A"/></DataTrigger><DataTrigger Binding="{Binding Status}" Value="失败"><Setter Property="Foreground" Value="{StaticResource DangerBrush}"/></DataTrigger><DataTrigger Binding="{Binding Status}" Value="已拒绝"><Setter Property="Foreground" Value="{StaticResource DangerBrush}"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock></DataTemplate></DataGridTemplateColumn.CellTemplate>
+       <DataGridTemplateColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding Status}" ToolTip="{Binding Message}" VerticalAlignment="Center" Margin="10,0"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource MutedBrush}"/><Style.Triggers><DataTrigger Binding="{Binding Status}" Value="已删除"><Setter Property="Foreground" Value="{DynamicResource SuccessBrush}"/></DataTrigger><DataTrigger Binding="{Binding Status}" Value="失败"><Setter Property="Foreground" Value="{DynamicResource DangerTextBrush}"/></DataTrigger><DataTrigger Binding="{Binding Status}" Value="已拒绝"><Setter Property="Foreground" Value="{DynamicResource DangerTextBrush}"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock></DataTemplate></DataGridTemplateColumn.CellTemplate>
       </DataGridTemplateColumn>
      </DataGrid.Columns>
     </DataGrid>
     <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsHitTestVisible="False" Visibility="{Binding IsEmpty, Converter={StaticResource BoolVisibility}}" Margin="30">
-     <TextBlock Text="暂无结果" FontWeight="SemiBold" FontSize="17" Foreground="{StaticResource MutedBrush}" HorizontalAlignment="Center"/>
+     <TextBlock Text="暂无结果" FontWeight="SemiBold" FontSize="17" Foreground="{DynamicResource MutedBrush}" HorizontalAlignment="Center"/>
      <TextBlock Text="扫描结果会显示在这里，默认不会勾选任何文件。" Style="{StaticResource MutedText}" Margin="0,8,0,0" TextAlignment="Center"/>
     </StackPanel>
    </Grid>
   </Border>
   <Grid Grid.Row="4" Margin="0,16,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
    <StackPanel>
-    <StackPanel Orientation="Horizontal"><Button AutomationProperties.AutomationId="SelectAll" Content="全选" Command="{Binding SelectAllCommand}" Padding="13,7" MinHeight="34"/><Button AutomationProperties.AutomationId="DeselectAll" Content="取消全选" Command="{Binding ClearSelectionCommand}" Padding="13,7" MinHeight="34" Margin="8,0,0,0"/><TextBlock Text="{Binding SelectionSummary}" VerticalAlignment="Center" Margin="14,0,0,0" Foreground="{StaticResource MutedBrush}" AutomationProperties.AutomationId="SelectionSummary"/></StackPanel>
-    <TextBlock Text="{Binding ScannedScope}" TextTrimming="CharacterEllipsis" ToolTip="{Binding ScannedScope}" Foreground="{StaticResource MutedBrush}" FontSize="11" Margin="0,8,12,0"/>
+    <StackPanel Orientation="Horizontal"><Button AutomationProperties.AutomationId="SelectAll" Content="全选" Command="{Binding SelectAllCommand}" Padding="13,7" MinHeight="34"/><Button AutomationProperties.AutomationId="DeselectAll" Content="取消全选" Command="{Binding ClearSelectionCommand}" Padding="13,7" MinHeight="34" Margin="8,0,0,0"/><TextBlock Text="{Binding SelectionSummary}" VerticalAlignment="Center" Margin="14,0,0,0" Foreground="{DynamicResource MutedBrush}" AutomationProperties.AutomationId="SelectionSummary"/></StackPanel>
+    <TextBlock Text="{Binding ScannedScope}" TextTrimming="CharacterEllipsis" ToolTip="{Binding ScannedScope}" Foreground="{DynamicResource MutedBrush}" FontSize="11" Margin="0,8,12,0"/>
    </StackPanel>
-   <StackPanel Grid.Column="1"><Button AutomationProperties.AutomationId="DeleteSelected" Content="删除所选" Command="{Binding DeleteSelectedCommand}" Style="{StaticResource DangerButton}" MinWidth="114"/><TextBlock Text="永久删除 · 不进回收站" Foreground="{StaticResource MutedBrush}" FontSize="11" Margin="0,7,0,0" HorizontalAlignment="Center"/></StackPanel>
+   <StackPanel Grid.Column="1"><Button AutomationProperties.AutomationId="DeleteSelected" Content="删除所选" Command="{Binding DeleteSelectedCommand}" Style="{StaticResource DangerButton}" MinWidth="114"/><TextBlock Text="永久删除 · 不进回收站" Foreground="{DynamicResource MutedBrush}" FontSize="11" Margin="0,7,0,0" HorizontalAlignment="Center"/></StackPanel>
   </Grid>
  </Grid>
 </UserControl>

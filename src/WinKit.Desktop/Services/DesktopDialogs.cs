@@ -50,9 +50,10 @@ public sealed class DesktopDialogs : IDesktopDialogs
         {
             Title = "扫描问题与跳过项", Owner = Owner, Width = 780, Height = 480, MinWidth = 460, MinHeight = 280,
             WindowStartupLocation = WindowStartupLocation.CenterOwner, Content = content,
-            Background = (System.Windows.Media.Brush)Application.Current.FindResource("CanvasBrush"),
             FontFamily = (System.Windows.Media.FontFamily)Application.Current.FindResource("UiFont"), FontSize = 13
         };
+        window.SetResourceReference(Window.BackgroundProperty, "CanvasBrush");
+        (Application.Current as App)?.Theme?.AttachWindow(window);
         window.ShowDialog();
     }
 

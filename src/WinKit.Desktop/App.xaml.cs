@@ -11,6 +11,7 @@ namespace WinKit.Desktop;
 
 public partial class App : Application
 {
+    public ThemeService? Theme { get; private set; }
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
@@ -35,13 +36,16 @@ public partial class App : Application
             else dataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "WinKit");
 
             var settings = new SettingsStore(dataDirectory);
+            var theme = new ThemeService(settings);
+            Theme = theme;
             var journal = new OperationJournal(dataDirectory);
             IDesktopDialogs dialogs = smoke ? new ScanOnlyTestDialogs() : new DesktopDialogs();
             var cleanup = new NulCleanupViewModel(new NulCleanupService(), dialogs, settings, journal);
             var registry = new ToolRegistry(cleanup);
-            var shell = new ShellViewModel(registry, cleanup, new ActivityViewModel(journal, dialogs), new SettingsViewModel(settings, dialogs, journal));
+            var shell = new ShellViewModel(registry, cleanup, new ActivityViewModel(journal, dialogs), new SettingsViewModel(settings, dialogs, journal, theme), theme);
             var window = new MainWindow { DataContext = shell };
             MainWindow = window;
+            theme.AttachWindow(window);
             window.Show();
             await journal.LoadAsync();
             if (smoke)

@@ -1,6 +1,7 @@
 using System.Windows.Controls;
 using WinKit.Desktop.Infrastructure;
 using WinKit.Desktop.Pages;
+using WinKit.Desktop.Services;
 using WinKit.Desktop.Tools.NulCleanup;
 
 namespace WinKit.Desktop.Shell;
@@ -38,9 +39,11 @@ public sealed class ShellViewModel : ObservableObject
     public UserControl? CurrentView { get => _currentView; private set => SetProperty(ref _currentView, value); }
     public string CurrentTitle { get => _currentTitle; private set => SetProperty(ref _currentTitle, value); }
 
-    public ShellViewModel(ToolRegistry registry, NulCleanupViewModel nulCleanup, ActivityViewModel activity, SettingsViewModel settings)
+    public ThemeService Theme { get; }
+    public ShellViewModel(ToolRegistry registry, NulCleanupViewModel nulCleanup, ActivityViewModel activity, SettingsViewModel settings, ThemeService theme)
     {
         NulCleanup = nulCleanup;
+        Theme = theme;
         _workOwners = registry.Tools.Select(tool => tool.ViewModel).OfType<IBackgroundWork>().ToArray();
         ToolNavigation = registry.Tools.Select(tool => new NavigationItem
         {

@@ -39,12 +39,26 @@ internal static class Program
             File.WriteAllText(Extended(Path.Combine(folder, "nul.txt")), "keep nul.txt");
             File.WriteAllText(Path.Combine(folder, "normal.txt"), "keep normal");
 
+            var dataDirectory = Path.Combine(_fixture, "app-data");
+            Directory.CreateDirectory(dataDirectory);
+            // Previous versions had no theme field; upgrading must keep existing settings usable.
+            File.WriteAllText(Path.Combine(dataDirectory, "settings.json"), "{\"RememberLastFolder\":true,\"LastFolder\":\"\"}");
             var start = new ProcessStartInfo(Path.GetFullPath(args[0])) { UseShellExecute = false };
             start.ArgumentList.Add("--test-data-directory");
             start.ArgumentList.Add(Path.Combine(_fixture, "app-data"));
             _app = Process.Start(start) ?? throw new Exception("Could not start app.");
             _window = WaitForWindow(_app.Id, "WinKit", TimeSpan.FromSeconds(40));
             Console.WriteLine("App window found.");
+            Assert(Control("ToggleTheme").Current.Name == "切换夜间", "First launch defaults to light");
+            Invoke("ToggleTheme");
+            WaitUntil(() => Control("ToggleTheme").Current.Name == "切换浅色", "header switches to dark immediately");
+            Invoke("NavSettings");
+            Assert(((TogglePattern)Control("DarkTheme").GetCurrentPattern(TogglePattern.Pattern)).Current.ToggleState == ToggleState.On, "Settings reflect header dark-theme selection");
+            ((TogglePattern)Control("DarkTheme").GetCurrentPattern(TogglePattern.Pattern)).Toggle();
+            WaitUntil(() => Control("ToggleTheme").Current.Name == "切换夜间", "settings switch updates header");
+            Invoke("ToggleTheme");
+            WaitUntil(() => ((TogglePattern)Control("DarkTheme").GetCurrentPattern(TogglePattern.Pattern)).Current.ToggleState == ToggleState.On, "header and settings stay synchronized");
+            Invoke("NavNulCleanup");
 
             SetText("FolderPath", Path.Combine(_fixture, "does-not-exist"));
             Invoke("Scan");
@@ -70,6 +84,11 @@ internal static class Program
             Invoke("SelectAll");
             WaitUntil(() => Control("DeleteSelected").Current.IsEnabled, "select all enables deletion");
             Assert(GetToggles(grid).All(x => ((TogglePattern)x.GetCurrentPattern(TogglePattern.Pattern)).Current.ToggleState == ToggleState.On), "Select all checks rows");
+            Invoke("ToggleTheme");
+            WaitUntil(() => Control("ToggleTheme").Current.Name == "切换夜间", "switch back to light without recreating results");
+            Assert(GetToggles(grid).Length == 2 && GetToggles(grid).All(x => ((TogglePattern)x.GetCurrentPattern(TogglePattern.Pattern)).Current.ToggleState == ToggleState.On), "Theme switching preserves results and selection");
+            Invoke("ToggleTheme");
+            WaitUntil(() => Control("ToggleTheme").Current.Name == "切换浅色", "restore dark theme for deletion tests");
             Invoke("DeselectAll");
             WaitUntil(() => !Control("DeleteSelected").Current.IsEnabled, "deselect disables deletion");
             Invoke("SelectAll");
@@ -103,6 +122,16 @@ internal static class Program
             Assert(_app.WaitForExit(10000), "Window closes cleanly");
             Assert(_app.ExitCode == 0, "Application exits successfully");
             Assert(Directory.Exists(Path.Combine(_fixture, "app-data")), "Test settings/logs isolated to fixture");
+            _app.Dispose();
+            _app = Process.Start(start) ?? throw new Exception("Could not restart app.");
+            _window = WaitForWindow(_app.Id, "WinKit", TimeSpan.FromSeconds(40));
+            Assert(Control("ToggleTheme").Current.Name == "切换浅色", "Dark theme survives application restart");
+            Invoke("NavSettings");
+            Assert(((TogglePattern)Control("DarkTheme").GetCurrentPattern(TogglePattern.Pattern)).Current.ToggleState == ToggleState.On, "Persisted dark theme is reflected in settings");
+            Invoke("NavNulCleanup");
+            Assert(GetToggles(Control("Results")).Length == 0 && !Control("DeleteSelected").Current.IsEnabled, "Restart restores theme only, not scan or selection");
+            ((WindowPattern)_window.GetCurrentPattern(WindowPattern.Pattern)).Close();
+            Assert(_app.WaitForExit(10000) && _app.ExitCode == 0, "Restarted application closes cleanly");
             Console.WriteLine($"PASS: {_assertions} desktop assertions, real UI confirmation and permanent deletion.");
             return 0;
         }

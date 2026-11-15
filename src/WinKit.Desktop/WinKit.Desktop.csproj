@@ -8,7 +8,6 @@
     <AssemblyName>WinKit</AssemblyName>
     <RootNamespace>WinKit.Desktop</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>0.1.0</Version>
     <Description>WinKit Windows 工具箱</Description>
     <ApplicationIcon>../../assets/WinKit.ico</ApplicationIcon>
   </PropertyGroup>
